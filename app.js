@@ -22,11 +22,29 @@ app.set('view engine', 'hbs');
 
 handlebars.registerPartials(__dirname + '/app_server/views/partials');
 
+// Global request logger (minimal) to capture method and path for troubleshooting
+app.use((req, res, next) => {
+  console.log(`[REQ] ${new Date().toISOString()} ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Enable CORS
+app.use('/api',(req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+
+  next();
+});
+
+
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -35,6 +53,7 @@ app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.warn(`[WARN] 404 Not Found: ${req.method} ${req.originalUrl}`);
   next(createError(404));
 });
 
