@@ -87,4 +87,6 @@ export class EditTrip implements OnInit {
       }) 
     } 
   }
+  // convenience getter for easy access to form fields in the template
+  get f() { return this.editForm.controls; }
 }

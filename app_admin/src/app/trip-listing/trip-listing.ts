@@ -6,12 +6,13 @@ import { TripData} from '../services/trip-data';
 import { Trip } from '../models/trip';
 
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication';
 
 @Component({
   selector: 'app-trip-listing',
   imports: [CommonModule, TripCard],
   templateUrl: './trip-listing.html',
-  styleUrl: './trip-listing.css',
+  styleUrls: ['./trip-listing.css'],
   providers: [TripData]
 })
 
@@ -20,7 +21,7 @@ export class TripListing implements OnInit{
   trips!: Trip[];
   message: string = '';
   
-  constructor(private tripData: TripData, private router: Router) {
+  constructor(private tripData: TripData, private router: Router, public auth: AuthenticationService) {
     console.log('trip-listing constructor');
    }
    public addTrip(): void {
